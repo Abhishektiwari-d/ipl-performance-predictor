@@ -94,6 +94,8 @@ def main():
 
     except requests.exceptions.RequestException:
         st.error("⚠️ API connection failed.")
+   if __name__=="__main__":
+       main()
 
 
     # load resources using resource_path
@@ -202,6 +204,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
