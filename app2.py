@@ -5,15 +5,31 @@ import pickle
 import base64
 import sys, os
 import io
-import requests
+mport requests
+import streamlit as st
 
 API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
 
 url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
 
-response = requests.get(url)
-data = response.json()
-st.write(data)
+try:
+    response = requests.get(url, timeout=10)
+    data = response.json()
+
+    if "data" in data and len(data["data"]) > 0:
+        player = data["data"][0]
+
+        st.subheader("Player Info")
+        st.write("Name:", player.get("name"))
+        st.write("Country:", player.get("country"))
+        st.write("Role:", player.get("role"))
+
+    else:
+        st.warning("No data found")
+
+except requests.exceptions.RequestException:
+    st.error("⚠️ API connection failed. Try again later.")
+
 
 # helper to support running inside PyInstaller exe or normal folder
 def resource_path(relative):
@@ -185,4 +201,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
