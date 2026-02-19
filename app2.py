@@ -7,7 +7,7 @@ import sys, os
 import io
 import requests
 
-API_KEY = "PASTE_YOUR_API_KEY_HERE"
+API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
 
 url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
 
@@ -185,3 +185,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
