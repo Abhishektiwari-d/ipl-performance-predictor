@@ -5,8 +5,9 @@ import pickle
 import base64
 import sys, os
 import io
-mport requests
-import streamlit as st
+import requests
+
+if st.button("load player Data"):
 
 API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
 
@@ -19,7 +20,7 @@ try:
     if "data" in data and len(data["data"]) > 0:
         player = data["data"][0]
 
-        st.subheader("Player Info")
+        st.subheader("Live Player Info")
         st.write("Name:", player.get("name"))
         st.write("Country:", player.get("country"))
         st.write("Role:", player.get("role"))
@@ -201,5 +202,6 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
