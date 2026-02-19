@@ -71,31 +71,32 @@ def main():
     st.title("🏏 IPL Player Performance Predictor App")
     st.write("Choose a player from dataset (if available) OR enter stats manually, then click Predict.")
 
- if st.button("Load Player Data"):
+    if st.button("Load Player Data"):
 
-    API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
+       API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
 
-    url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
+       url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
 
-    try:
-        response = requests.get(url, timeout=10)
-        data = response.json()
+       try:
+           response = requests.get(url, timeout=10)
+           data = response.json()
 
-        if "data" in data and len(data["data"]) > 0:
-            player = data["data"][0]
+           if "data" in data and len(data["data"]) > 0:
+               player = data["data"][0]
 
-            st.subheader("Live Player Info")
-            st.write("Name:", player.get("name"))
-            st.write("Country:", player.get("country"))
-            st.write("Role:", player.get("role"))
+               st.subheader("Live Player Info")
+               st.write("Name:", player.get("name"))
+               st.write("Country:", player.get("country"))
+               st.write("Role:", player.get("role"))
 
-        else:
-            st.warning("No data found")
+           else:
+               st.warning("No data found")
 
-    except requests.exceptions.RequestException:
-        st.error("⚠️ API connection failed.")
-   if __name__=="__main__":
-       main()
+       except requests.exceptions.RequestException:
+           st.error("⚠️ API connection failed.")
+           
+ if __name__== "__main__":
+     main()
 
 
     # load resources using resource_path
@@ -204,6 +205,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
