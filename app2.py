@@ -7,31 +7,6 @@ import sys, os
 import io
 import requests
 
-if st.button("load player Data"):
-
-    API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
-
-    url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
-
-try:
-    response = requests.get(url, timeout=10)
-    data = response.json()
-
-    if "data" in data and len(data["data"]) > 0:
-        player = data["data"][0]
-
-        st.subheader("Live Player Info")
-        st.write("Name:", player.get("name"))
-        st.write("Country:", player.get("country"))
-        st.write("Role:", player.get("role"))
-
-    else:
-        st.warning("No data found")
-
-except requests.exceptions.RequestException:
-    st.error("⚠️ API connection failed. Try again later.")
-
-
 # helper to support running inside PyInstaller exe or normal folder
 def resource_path(relative):
     if hasattr(sys, "_MEIPASS"):
@@ -95,6 +70,31 @@ def main():
     # top title area
     st.title("🏏 IPL Player Performance Predictor App")
     st.write("Choose a player from dataset (if available) OR enter stats manually, then click Predict.")
+
+ if st.button("Load Player Data"):
+
+    API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
+
+    url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
+
+    try:
+        response = requests.get(url, timeout=10)
+        data = response.json()
+
+        if "data" in data and len(data["data"]) > 0:
+            player = data["data"][0]
+
+            st.subheader("Live Player Info")
+            st.write("Name:", player.get("name"))
+            st.write("Country:", player.get("country"))
+            st.write("Role:", player.get("role"))
+
+        else:
+            st.warning("No data found")
+
+    except requests.exceptions.RequestException:
+        st.error("⚠️ API connection failed.")
+
 
     # load resources using resource_path
     model = load_model(resource_path("ipl_model.pkl"))
@@ -202,6 +202,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
