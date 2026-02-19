@@ -5,6 +5,15 @@ import pickle
 import base64
 import sys, os
 import io
+import requests
+
+API_KEY = "PASTE_YOUR_API_KEY_HERE"
+
+url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
+
+response = requests.get(url)
+data = response.json()
+st.write(data)
 
 # helper to support running inside PyInstaller exe or normal folder
 def resource_path(relative):
@@ -174,4 +183,5 @@ def main():
         st.info("No dataset file (ipl_data.csv) present in folder.")
 
 if __name__ == "__main__":
+
     main()
