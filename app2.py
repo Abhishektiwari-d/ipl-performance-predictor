@@ -9,9 +9,9 @@ import requests
 
 if st.button("load player Data"):
 
-API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
+    API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
 
-url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
+    url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
 
 try:
     response = requests.get(url, timeout=10)
@@ -202,6 +202,7 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
 
 
