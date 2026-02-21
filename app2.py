@@ -202,9 +202,10 @@ def main():
     else:
         st.info("No dataset file (ipl_data.csv) present in folder.")
 
-if __name__ == "__main__":
+main()
 
   
+
 
 
 
