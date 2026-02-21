@@ -75,8 +75,7 @@ def main():
 
        API_KEY = "7874ce44-b5d6-4220-ae95-4c9bfe42559b"
 
-       url = f"https://api.cricketdata.org/v1/players?apikey={API_KEY}&search=Virat Kohli"
-
+       url = https://api.cricapi.com/v1/players?apikey=59046beb-2468-437b-9945-a3240e7a4337&offset=0
        try:
            response = requests.get(url, timeout=10)
            data = response.json()
@@ -205,6 +204,7 @@ def main():
 main()
 
   
+
 
 
 
