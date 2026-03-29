@@ -71,7 +71,7 @@ def main():
     st.title("🏏 IPL Player Performance Predictor App")
     st.write("Choose a player from dataset (if available) OR enter stats manually, then click Predict.")
 
-    if st.button("Load Player Data", key="load_btn"):
+    if st.button("Load Player Data", key="load_player_btn"):
 
        API_KEY = "7874ce44-b5d6-4220-ae95-4c9bfe42559b"
 
@@ -159,7 +159,7 @@ def main():
         economy = st.number_input("Economy Rate", min_value=0.0, step=0.1, value=float(st.session_state.economy))
 
         # predict button
-        if st.button("Predict Performance Rating"):
+        if st.button("Clear / Reset", key="btn_predict"):
             # avoid predicting when all zero
             if matches == 0 and runs == 0 and strike_rate == 0 and average == 0 and wickets == 0 and economy == 0:
                 st.warning("Please enter player's stats before predicting.")
