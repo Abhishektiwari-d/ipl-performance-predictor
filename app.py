@@ -1,100 +1,114 @@
+# app.py
 import streamlit as st
 import pandas as pd
 import pickle
 import base64
-import os
+import sys, os
 import requests
 
-# ---------------- BACKGROUND ----------------
-def add_bg():
+# ----------------- helpers -----------------
+
+def resource_path(relative):
+    return os.path.join(os.path.abspath("."), relative)
+
+def add_gradient_background():
     st.markdown("""
     <style>
     .stApp {
-        background: linear-gradient(135deg,#fbc2eb,#a6c1ee);
+      background: linear-gradient(135deg, #fbc2eb 0%, #a18cd1 50%, #89f7fe 100%);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# ---------------- LOADERS ----------------
-def load_model():
+def add_kohli_overlay(image_file):
     try:
-        with open("ipl_model.pkl", "rb") as f:
+        with open(image_file, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+            st.markdown(f"""
+            <div style="display:flex;justify-content:center;">
+              <img src="data:image/jpeg;base64,{b64}" width="60%" style="opacity:0.2;">
+            </div>
+            """, unsafe_allow_html=True)
+    except:
+        pass
+
+def load_model(path):
+    try:
+        with open(path, "rb") as f:
             return pickle.load(f)
     except:
         return None
 
-def load_data():
+def load_dataset(path):
     try:
-        return pd.read_csv("ipl_data.csv")
+        return pd.read_csv(path)
     except:
         return None
 
-# ---------------- MAIN ----------------
+# ----------------- MAIN -----------------
+
 def main():
     st.set_page_config(page_title="IPL Predictor", layout="wide")
-    add_bg()
+    add_gradient_background()
 
     st.title("🏏 IPL Player Performance Predictor")
 
     # -------- API BUTTON --------
     if st.button("Load Player Data", key="btn_load"):
-        url = "https://api.cricapi.com/v1/players?apikey=7874ce44-b5d6-4220-ae95-4c9bfe42559b&offset=0"
         try:
-            r = requests.get(url)
-            data = r.json()
+            url = "https://api.cricapi.com/v1/players?apikey=7874ce44-b5d6-4220-ae95-4c9bfe42559b&offset=0"
+            res = requests.get(url, timeout=10)
+            data = res.json()
 
             if "data" in data:
-                p = data["data"][0]
-                st.subheader("Live Player Info")
-                st.write("Name:", p.get("name"))
-                st.write("Country:", p.get("country"))
-                st.write("Role:", p.get("role"))
+                player = data["data"][0]
+                st.success("Live Data Loaded ✅")
+                st.write("Name:", player.get("name"))
+                st.write("Country:", player.get("country"))
+                st.write("Role:", player.get("role"))
             else:
-                st.warning("No data")
+                st.warning("No data found")
 
         except:
-            st.error("API Error")
+            st.error("API Failed ❌")
 
     # -------- LOAD FILES --------
-    model = load_model()
-    df = load_data()
+    model = load_model("ipl_model.pkl")
+    df = load_dataset("ipl_data.csv")
 
-    col1, col2 = st.columns(2)
+    add_kohli_overlay("kohli.jpg")
 
     # -------- INPUT --------
-    with col1:
-        matches = st.number_input("Matches", 0.0)
-        runs = st.number_input("Runs", 0.0)
-        strike_rate = st.number_input("Strike Rate", 0.0)
-        average = st.number_input("Average", 0.0)
-        wickets = st.number_input("Wickets", 0.0)
-        economy = st.number_input("Economy", 0.0)
+    st.subheader("Enter Player Stats")
 
-        # -------- PREDICT --------
-        if st.button("Predict", key="btn_predict"):
-            if model is None:
-                st.error("Model missing")
-            else:
-                X = pd.DataFrame([[matches, runs, strike_rate, average, wickets, economy]],
-                                 columns=['matches','runs','strike_rate','average','wickets','economy'])
-                try:
-                    pred = model.predict(X)
-                    st.success(f"Prediction: {pred[0]:.2f}")
-                except Exception as e:
-                    st.error(str(e))
+    matches = st.number_input("Matches", 0.0)
+    runs = st.number_input("Runs", 0.0)
+    strike_rate = st.number_input("Strike Rate", 0.0)
+    average = st.number_input("Average", 0.0)
+    wickets = st.number_input("Wickets", 0.0)
+    economy = st.number_input("Economy", 0.0)
 
-        # -------- RESET --------
-        if st.button("Reset", key="btn_reset"):
-            st.rerun()
+    # -------- PREDICT --------
+    if st.button("Predict", key="btn_predict"):
+        if model is None:
+            st.error("Model not loaded ❌")
+        else:
+            X = pd.DataFrame([[matches, runs, strike_rate, average, wickets, economy]],
+                             columns=['matches','runs','strike_rate','average','wickets','economy'])
+            try:
+                pred = model.predict(X)
+                st.success(f"Prediction: {pred[0]:.2f}")
+            except:
+                st.error("Prediction Error ❌")
+
+    # -------- RESET --------
+    if st.button("Clear / Reset", key="btn_reset"):
+        st.rerun()
 
     # -------- DATA --------
-    with col2:
-        if df is not None:
-            st.subheader("Dataset")
-            st.dataframe(df.head())
-        else:
-            st.info("CSV file not found")
+    if df is not None:
+        st.subheader("Dataset Preview")
+        st.dataframe(df.head())
 
-# -------- RUN --------
-if __name__ == "__main__":
-    main()
+# RUN APP
+main()
