@@ -1,9 +1,3 @@
-
-Abhi Pundit <abhipundit9@gmail.com>
-09:36 (1 hour ago)
-to abhI
-
-# app.py
 import streamlit as st
 import pandas as pd
 import pickle
@@ -207,3 +201,4 @@ def main():
         st.info("No dataset file (ipl_data.csv) present in folder.")
     
     main()
+
