@@ -73,9 +73,9 @@ def main():
 
     if st.button("Load Player Data"):
 
-       API_KEY = "59046beb-2468-437b-9945-a3240e7a4337"
+       API_KEY = "7874ce44-b5d6-4220-ae95-4c9bfe42559b"
 
-       url = "https://api.cricapi.com/v1/players?apikey=59046beb-2468-437b-9945-a3240e7a4337&offset=0"
+       url = "https://api.cricapi.com/v1/players?apikey=7874ce44-b5d6-4220-ae95-4c9bfe42559b&offset=0"
        try:
            response = requests.get(url, timeout=10)
            data = response.json()
