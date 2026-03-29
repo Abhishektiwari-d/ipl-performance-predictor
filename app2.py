@@ -71,11 +71,11 @@ def main():
     st.title("🏏 IPL Player Performance Predictor App")
     st.write("Choose a player from dataset (if available) OR enter stats manually, then click Predict.")
 
-    if st.button("Load Player Data"):
+    if st.button("Load Player Data", key="load_btn"):
 
        API_KEY = "7874ce44-b5d6-4220-ae95-4c9bfe42559b"
 
-       url = "https://api.cricapi.com/v1/players?apikey=7874ce44-b5d6-4220-ae95-4c9bfe42559b&offset=0"
+       url = f"https://api.cricapi.com/v1/players?apikey=7874ce44-b5d6-4220-ae95-4c9bfe42559b&offset=0"
        try:
            response = requests.get(url, timeout=10)
            data = response.json()
